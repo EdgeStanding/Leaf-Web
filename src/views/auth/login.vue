@@ -5,12 +5,18 @@
       v-model:value="token"
       type="password"
       name="token"
-      placeholder="输入 Token"
+      placeholder="输入 Token 以继续"
       :disabled="buttonDisabled"
     />
-    <n-button type="primary" @click="connect" :disabled="buttonDisabled"
-      >连接</n-button
-    >
+    <div>
+      <n-button type="primary" @click="connect" :disabled="buttonDisabled"
+        >连接</n-button
+      >
+      &nbsp;
+      <n-button type="primary" @click="toLeaf" :disabled="buttonDisabled"
+        >回到 Leaf</n-button
+      >
+    </div>
   </n-space>
 </template>
 
@@ -20,8 +26,9 @@ import { NSpace, NInput, NButton } from "naive-ui";
 import store from "../../plugins/store";
 import http from "../../api/http";
 import router from "../../plugins/router";
+import api from "../../config/api";
 
-const token = ref("im@ivampiresp.com");
+const token = ref("");
 const title = ref("连接到 Edge.st");
 const buttonDisabled = ref(false);
 
@@ -30,9 +37,7 @@ const buttonDisabled = ref(false);
 const connect = () => {
   buttonDisabled.value = true;
   title.value = "正在验证 Token...";
-  store.commit("updateUser", {
-    api_token: token.value,
-  });
+  store.commit("updateToken", token.value);
   http
     .get("/user")
     .then((res) => {
@@ -44,8 +49,24 @@ const connect = () => {
       router.push("/");
     })
     .catch((err) => {
+      store.commit("updateToken", {
+        token: null,
+      });
       title.value = "Token 验证失败，请确认 Token 是否正确。";
       buttonDisabled.value = false;
     });
+  token.value = "";
 };
+
+// read the router query para
+const query = router.currentRoute.value.query;
+
+if (query.token != null) {
+  token.value = query.token as string;
+  connect();
+}
+
+function toLeaf() {
+  window.location.href = api.origin;
+}
 </script>

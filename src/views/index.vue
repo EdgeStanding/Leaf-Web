@@ -20,10 +20,11 @@
 <script lang="ts" setup>
 import { ref } from "@vue/reactivity";
 
-import { useLoadingBar, useMessage } from "naive-ui";
-import { onMounted } from "vue";
 
-import axios from "../api/axios";
+// import { useLoadingBar, useMessage } from "naive-ui";
+// import { onMounted } from "vue";
+
+// import axios from "../api/axios";
 import store from "../plugins/store";
 
 // onMounted(() => {
@@ -32,5 +33,6 @@ import store from "../plugins/store";
 
 function logout() {
   store.commit("updateUser", []);
+  store.commit("updateToken", null);
 }
 </script>
