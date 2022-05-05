@@ -32,8 +32,10 @@ baseURL += apiVersion;
 // 实例
 let instance = axios.create({
     baseURL: baseURL,
-    timeout: 15000, // 毫秒
+    timeout: 5000,
 });
+
+
 
 instance.interceptors.request.use(
     (config) => {

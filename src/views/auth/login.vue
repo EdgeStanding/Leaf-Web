@@ -66,6 +66,6 @@ if (query.token != null) {
 }
 
 function toLeaf() {
-  window.location.href = api.origin;
+  window.location.href = api.origin + '/?callback=' + encodeURIComponent(window.location.href);
 }
 </script>
