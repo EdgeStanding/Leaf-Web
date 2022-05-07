@@ -100,6 +100,9 @@ router.beforeEach((to, from) => {
         }
     } else {
         // 无需登录
+
+        document.title = 'Leaf'
+        
         return true;
     }
 });
