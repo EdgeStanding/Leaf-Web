@@ -2,6 +2,7 @@ import axios from "axios";
 import store from "../plugins/store";
 import api from "../config/api";
 import app from "../config/app";
+import router from "../plugins/router";
 
 // axios.defaults.withCredentials = true;
 // import Base from "../Base.vue";
@@ -77,6 +78,12 @@ instance.interceptors.response.use(
     },
     (error) => {
         window.$loadingBar.error();
+
+        if (error.response.status === 401) {
+            store.commit("setToken", null);
+            router.push({ name: "Login" });
+
+        }
 
         window.$message.error(
             error.response.data.message
